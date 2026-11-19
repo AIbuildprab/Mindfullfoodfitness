@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { BackHome } from "@/components/BackHome";
 import { Suspense } from "react";
 import { SignupForm } from "@/components/SignupForm";
 
@@ -14,15 +14,14 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <div className="fixed inset-0 z-[60] overflow-y-auto bg-[#0f0f10] text-white">
-      <Link
-        href="/"
+      <BackHome
         className="absolute top-3 left-3 inline-flex min-h-10 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 text-[13px] font-semibold sm:min-h-11 sm:gap-2 sm:px-5 sm:text-sm transition hover:border-gold hover:text-gold-2 sm:top-7 sm:left-7"
       >
         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <path d="M19 12H5m6-6-6 6 6 6" />
         </svg>
         Back to home
-      </Link>
+      </BackHome>
 
       <main className="mx-auto flex min-h-full w-full max-w-[500px] flex-col justify-start px-5 pt-16 pb-6 sm:pt-14 sm:pb-6">
         <div className="mb-5 text-center sm:mb-6">
