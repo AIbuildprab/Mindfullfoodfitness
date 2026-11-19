@@ -14,7 +14,7 @@ function Social({ href, label, children }: { href: string; label: string; childr
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition hover:bg-black hover:text-white"
+      className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition hover:text-gold-2"
     >
       {children}
     </a>
@@ -104,18 +104,24 @@ export function Header() {
 
   return (
     <>
-      <div className="hidden bg-gold-deep text-white lg:block">
-        <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 py-2">
-          <a
-            href={`mailto:${site.email}`}
-            className="inline-flex min-h-8 min-w-0 items-center gap-2 font-[family-name:var(--font-open-sans)] text-xs sm:text-sm"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" aria-hidden>
-              <path d="M3 6.5h18v11H3v-11Z" stroke="currentColor" strokeWidth="1.6" />
-              <path d="m4 7 8 6 8-6" stroke="currentColor" strokeWidth="1.6" />
-            </svg>
-            <span className="truncate">{site.email}</span>
-          </a>
+      <div className="hidden border-b border-gold/30 bg-[#0b0b0c] text-white lg:block">
+        <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 py-1">
+          <div className="flex min-w-0 items-center gap-1 font-[family-name:var(--font-open-sans)] text-[13px] text-white/70">
+            <a href={site.phoneHref} className="inline-flex min-h-8 items-center gap-2 rounded-full px-3 transition hover:text-gold-2">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-gold-2" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+              </svg>
+              {site.phoneDisplay}
+            </a>
+            <span aria-hidden className="h-3 w-px bg-white/15" />
+            <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-8 items-center px-3 transition hover:text-gold-2">
+              WhatsApp
+            </a>
+            <span aria-hidden className="h-3 w-px bg-white/15" />
+            <a href={`mailto:${site.email}`} className="inline-flex min-h-8 items-center px-3 transition hover:text-gold-2">
+              Email
+            </a>
+          </div>
           <div className="flex shrink-0 items-center gap-2">
             <Social href={site.facebook} label="Facebook">
               <svg viewBox="0 0 512 512" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>

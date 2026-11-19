@@ -45,3 +45,7 @@ next-env.d.ts
 # local design previews
 .preview/
 .tmp-*
+
+# internal team notes (do not commit)
+HANDOFF.md
+HANDOFF*.md

@@ -14,20 +14,41 @@ export function PromiseCard({ children }: { children: ReactNode }) {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let raf = 0;
     let running = false;
+    let currentY = 0;
+    let targetY = 0;
+    let initialized = false;
 
-    const apply = () => {
+    const syncLayout = () => {
       const rect = panelEl.getBoundingClientRect();
       panelEl.style.setProperty("--promise-left", `${rect.left}px`);
       panelEl.style.setProperty("--promise-vh", `${window.innerHeight}px`);
+      return rect;
+    };
+
+    const apply = () => {
+      const rect = syncLayout();
       if (!desktop.matches || reduced.matches) {
         photoEl.style.transform = "";
-        return;
+        currentY = 0;
+        targetY = 0;
+        initialized = false;
+        return false;
       }
-      photoEl.style.transform = `translate3d(0, ${-rect.top}px, 0)`;
+      targetY = -rect.top;
+      if (!initialized) {
+        currentY = targetY;
+        initialized = true;
+      }
+      return true;
     };
 
     const loop = () => {
-      apply();
+      const active = apply();
+      if (active) {
+        currentY += (targetY - currentY) * 0.18;
+        if (Math.abs(targetY - currentY) < 0.15) currentY = targetY;
+        photoEl.style.transform = `translate3d(0, ${currentY.toFixed(2)}px, 0)`;
+      }
       if (running) raf = requestAnimationFrame(loop);
     };
 
@@ -51,12 +72,12 @@ export function PromiseCard({ children }: { children: ReactNode }) {
     );
 
     observer.observe(panelEl);
-    window.addEventListener("resize", apply);
+    window.addEventListener("resize", syncLayout);
     desktop.addEventListener("change", start);
     return () => {
       stop();
       observer.disconnect();
-      window.removeEventListener("resize", apply);
+      window.removeEventListener("resize", syncLayout);
       desktop.removeEventListener("change", start);
     };
   }, []);
@@ -65,7 +86,10 @@ export function PromiseCard({ children }: { children: ReactNode }) {
     <div className="relative mx-auto max-w-6xl">
       <div className="grid overflow-hidden rounded-[22px] lg:grid-cols-2">
         {children}
-        <div ref={panel} className="promise-panel relative order-first h-[340px] overflow-hidden bg-black sm:h-[400px] lg:order-none lg:h-auto lg:min-h-0">
+        <div
+          ref={panel}
+          className="promise-panel relative order-first h-[340px] overflow-hidden bg-black sm:h-[400px] lg:order-none lg:h-auto lg:min-h-0"
+        >
           <div
             aria-hidden
             className="absolute inset-0 bg-[url('/mff/promise-bg.webp')] bg-cover bg-right lg:hidden"

@@ -3,6 +3,7 @@ import { Manrope, Open_Sans } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
+import { ServiceWorker } from "@/components/ServiceWorker";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -47,6 +48,9 @@ export const metadata: Metadata = {
     description: site.description,
     images: ["/mff/hero-bg.webp"],
   },
+  applicationName: "Mindfull Food Fitness",
+  appleWebApp: { capable: true, title: "MFF", statusBarStyle: "black" },
+  formatDetection: { telephone: false },
   // Icons come from the app/ file conventions: favicon.ico, icon.png, apple-icon.png.
 };
 
@@ -58,6 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col overflow-x-hidden bg-white font-sans text-neutral-900">
         <JsonLd />
+        <ServiceWorker />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
