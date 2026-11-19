@@ -126,8 +126,52 @@ body {
   opacity: 0;
 }
 
+.hero-photo {
+  animation: hero-photo-in 2.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: 70% 30%;
+}
+
+@keyframes hero-photo-in {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-glow {
+  animation: hero-glow 7s ease-in-out infinite alternate;
+}
+
+@keyframes hero-glow {
+  from {
+    opacity: 0.55;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(-24px, 18px, 0) scale(1.12);
+  }
+}
+
+@media (hover: hover) {
+  a[class*="rounded-full"],
+  button[class*="rounded-full"] {
+    transition-property: background-color, color, border-color, transform, box-shadow;
+    transition-duration: 0.25s;
+  }
+
+  a[class*="bg-gold"][class*="rounded-full"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(166, 141, 65, 0.35);
+  }
+}
+
 .rise {
-  animation-duration: 2.85s;
+  animation-duration: 1.1s;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -394,4 +438,16 @@ body {
     opacity: 1;
     transform: none;
   }
+}
+
+/* Horizontal swipe rows on phones: hidden bar, momentum, edge peek. */
+.scroll-row {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-inline: 1.25rem;
+  overscroll-behavior-x: contain;
+}
+
+.scroll-row::-webkit-scrollbar {
+  display: none;
 }

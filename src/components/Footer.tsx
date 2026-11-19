@@ -12,7 +12,7 @@ function Social({ href, label, children }: { href: string; label: string; childr
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gold text-white transition hover:bg-white hover:text-black"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-gold text-white transition hover:bg-white hover:text-black"
     >
       {children}
     </a>
@@ -27,7 +27,7 @@ export function Footer() {
     <footer className="pb-cta bg-black text-white">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 text-center sm:px-8 lg:grid-cols-[minmax(0,1.5fr)_auto_minmax(0,1fr)] lg:text-left">
         <div>
-          <Link href="/#home" className="inline-block">
+          <Link href="/#home" className="inline-flex min-h-11 items-center">
             <Image
               src="/brand/Logo_Inverted.png"
               alt="Mindfull Food Fitness"
@@ -47,7 +47,7 @@ export function Footer() {
             <ul className="space-y-0.5 text-sm text-white/85">
               {left.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="inline-flex hover:text-gold">
+                  <Link href={item.href} className="inline-flex min-h-11 items-center hover:text-gold sm:min-h-0">
                     {item.label}
                   </Link>
                 </li>
@@ -56,7 +56,7 @@ export function Footer() {
             <ul className="space-y-0.5 text-sm text-white/85">
               {right.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="inline-flex hover:text-gold">
+                  <Link href={item.href} className="inline-flex min-h-11 items-center hover:text-gold sm:min-h-0">
                     {item.label}
                   </Link>
                 </li>
@@ -85,7 +85,7 @@ export function Footer() {
                 <path d="M3 6.5h18v11H3v-11Z" stroke="currentColor" strokeWidth="1.6" />
                 <path d="m4 7 8 6 8-6" stroke="currentColor" strokeWidth="1.6" />
               </svg>
-              <a href={`mailto:${site.email}`} className="break-all hover:text-gold">
+              <a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center break-all hover:text-gold">
                 {site.email}
               </a>
             </li>
@@ -114,10 +114,10 @@ export function Footer() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-2 text-xs text-white/80 sm:flex-row sm:px-8">
           <p>© {new Date().getFullYear()} Mindfull Food Fitness</p>
           <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-gold">
+            <Link href="/privacy" className="inline-flex min-h-11 items-center hover:text-gold">
               Privacy
             </Link>
-            <Link href="/terms" className="hover:text-gold">
+            <Link href="/terms" className="inline-flex min-h-11 items-center hover:text-gold">
               Terms
             </Link>
           </div>

@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
-import { nav, site } from "@/lib/site";
+import { nav, navGroups, site } from "@/lib/site";
+import { UserIcon } from "./UserIcon";
 
 function Social({ href, label, children }: { href: string; label: string; children: ReactNode }) {
   return (
@@ -25,7 +26,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
   const [scrolled, setScrolled] = useState(false);
-  const solid = scrolled || open || pathname === "/privacy" || pathname === "/terms";
+  const [group, setGroup] = useState<string | null>(null);
+  const solid = scrolled || open || pathname === "/privacy" || pathname === "/terms" || pathname === "/login" || pathname === "/dashboard" || pathname === "/signup";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -125,12 +127,12 @@ export function Header() {
       </div>
 
       <header
-        className={`sticky top-0 z-50 border-b border-white/5 text-white transition-colors duration-1000 ${
+        className={`sticky top-0 z-50 border-b border-white/5 text-white transition-colors duration-300 ${
           solid ? "bg-black" : "bg-black/[0.07]"
         }`}
       >
         <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 py-3 lg:py-3.5">
-          <Link href="/#home" onClick={close} aria-label="Mindfull Food Fitness — home" className="shrink-0">
+          <Link href="/#home" onClick={close} aria-label="Mindfull Food Fitness — home" className="inline-flex min-h-11 shrink-0 items-center">
             <Image
               src="/brand/Logo_Inverted.png"
               alt="Mindfull Food Fitness"
@@ -143,25 +145,90 @@ export function Header() {
           </Link>
 
           <nav
-            className="hidden min-w-0 flex-1 items-center justify-end gap-x-2 font-[family-name:var(--font-open-sans)] text-[14px] font-medium lg:flex"
+            className="hidden min-w-0 flex-1 items-center justify-end gap-x-3 font-[family-name:var(--font-open-sans)] text-[14px] font-medium lg:flex"
             aria-label="Menu"
           >
-            {nav.map((item) => {
-              const current = active === item.id;
+            {navGroups.map((entry) => {
+              if ("items" in entry) {
+                const current = entry.items.some((item) => item.id === active);
+                const expanded = group === entry.id;
+                return (
+                  <div
+                    key={entry.id}
+                    className="relative"
+                    onMouseEnter={() => setGroup(entry.id)}
+                    onMouseLeave={() => setGroup(null)}
+                    onBlur={(event) => {
+                      if (!event.currentTarget.contains(event.relatedTarget)) setGroup(null);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") setGroup(null);
+                    }}
+                  >
+                    <button
+                      type="button"
+                      aria-expanded={expanded}
+                      aria-haspopup="true"
+                      onClick={() => setGroup(expanded ? null : entry.id)}
+                      className={`inline-flex items-center gap-1.5 border-b-2 px-2 py-1.5 whitespace-nowrap transition ${
+                        current || expanded ? "border-gold text-gold" : "border-transparent text-white hover:text-gold"
+                      }`}
+                    >
+                      {entry.label}
+                      <svg viewBox="0 0 12 12" className={`h-2.5 w-2.5 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} fill="none" aria-hidden>
+                        <path d="m2 4 4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div
+                      className={`absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 pt-3 transition duration-200 ${
+                        expanded ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
+                      }`}
+                    >
+                      <ul className="overflow-hidden rounded-xl border border-white/10 bg-black/95 p-1.5 shadow-[0_18px_40px_rgba(0,0,0,0.45)] backdrop-blur">
+                        {entry.items.map((item) => (
+                          <li key={item.id}>
+                            <Link
+                              href={item.href}
+                              onClick={() => setGroup(null)}
+                              tabIndex={expanded ? undefined : -1}
+                              aria-current={active === item.id ? "true" : undefined}
+                              className={`block rounded-lg px-3.5 py-2.5 text-[14px] transition hover:bg-white/10 hover:text-gold ${
+                                active === item.id ? "text-gold" : "text-white"
+                              }`}
+                            >
+                              {item.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                );
+              }
+              const current = active === entry.id;
               return (
                 <Link
-                  key={item.id}
-                  href={item.href}
+                  key={entry.id}
+                  href={entry.href}
                   aria-current={current ? "true" : undefined}
-                  className={`border-b-2 px-0.5 py-1.5 whitespace-nowrap transition ${
+                  className={`border-b-2 px-2 py-1.5 whitespace-nowrap transition ${
                     current ? "border-gold text-gold" : "border-transparent text-white hover:text-gold"
                   }`}
                 >
-                  {item.label}
+                  {entry.label}
                 </Link>
               );
             })}
           </nav>
+
+          <Link
+            href="/login"
+            aria-label="Sign in"
+            className="hidden shrink-0 items-center gap-2 rounded-full border border-white/30 px-3.5 py-2.5 font-[family-name:var(--font-open-sans)] text-[14px] font-medium text-white transition hover:border-gold hover:text-gold lg:inline-flex"
+          >
+            <UserIcon />
+            <span className="hidden xl:inline">Sign in</span>
+          </Link>
 
           <a
             href={site.bookingUrl}
@@ -172,9 +239,18 @@ export function Header() {
             Book a Free Strategy Call
           </a>
 
+          <div className="ml-auto flex items-center gap-2 lg:hidden">
+          <Link
+            href="/login"
+            onClick={close}
+            aria-label="Sign in"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20"
+          >
+            <UserIcon className="h-5 w-5" />
+          </Link>
           <button
             type="button"
-            className="ml-auto inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 lg:ml-0 lg:hidden"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -188,21 +264,48 @@ export function Header() {
               )}
             </svg>
           </button>
+          </div>
         </div>
 
         {open ? (
           <div id="mobile-menu" className="safe-bottom max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-black px-5 py-3 lg:hidden">
             <nav className="flex flex-col" aria-label="Menu">
-              {nav.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  onClick={close}
-                  className="flex min-h-12 items-center border-b border-white/10 text-base"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navGroups.map((entry) =>
+                "items" in entry ? (
+                  <div key={entry.id} className="border-b border-white/10 py-2">
+                    <p className="pb-1 pt-2 font-[family-name:var(--font-open-sans)] text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+                      {entry.label}
+                    </p>
+                    {entry.items.map((item) => (
+                      <Link
+                        key={item.id}
+                        href={item.href}
+                        onClick={close}
+                        className="flex min-h-11 items-center pl-3 text-[15px] text-white/90"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <Link
+                    key={entry.id}
+                    href={entry.href}
+                    onClick={close}
+                    className="flex min-h-12 items-center border-b border-white/10 text-base"
+                  >
+                    {entry.label}
+                  </Link>
+                ),
+              )}
+              <Link
+                href="/login"
+                onClick={close}
+                className="flex min-h-12 items-center gap-2 border-b border-white/10 text-base"
+              >
+                <UserIcon className="h-5 w-5" />
+                Sign in
+              </Link>
               <a
                 href={site.bookingUrl}
                 target="_blank"

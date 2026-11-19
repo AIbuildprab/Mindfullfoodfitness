@@ -36,3 +36,32 @@ export const nav = [
   { href: "/#reviews", id: "reviews", label: "Reviews" },
   { href: "/#contact", id: "contact", label: "Contact" },
 ] as const;
+
+/** Compact header navigation: groups fold the nine page sections into five choices. */
+export type NavGroup =
+  | { label: string; href: string; id: string }
+  | { label: string; id: string; items: readonly { href: string; id: string; label: string }[] };
+
+export const navGroups: readonly NavGroup[] = [
+  { label: "About", href: "/#about", id: "about" },
+  {
+    label: "Programme",
+    id: "programme-group",
+    items: [
+      { href: "/#programme", id: "programme", label: "The Programme" },
+      { href: "/#mff-nutrition", id: "mff-nutrition", label: "MFF Nutrition" },
+      { href: "/#whats-included", id: "whats-included", label: "What’s Included" },
+    ],
+  },
+  { label: "Pricing", href: "/#pricing", id: "pricing" },
+  {
+    label: "Results",
+    id: "results-group",
+    items: [
+      { href: "/#gallery", id: "gallery", label: "Gallery" },
+      { href: "/#reviews", id: "reviews", label: "Reviews" },
+      { href: "/#promise", id: "promise", label: "Our Promise" },
+    ],
+  },
+  { label: "Contact", href: "/#contact", id: "contact" },
+];

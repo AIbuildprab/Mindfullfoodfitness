@@ -50,11 +50,11 @@ export function SignupForm() {
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-ink-2 p-6 sm:p-8">
+    <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-[0_20px_50px_rgba(0,0,0,0.08)] sm:p-8">
       <div
         role="tablist"
         aria-label="Account"
-        className="mb-6 grid grid-cols-2 gap-2 rounded-full border border-white/10 bg-ink p-1"
+        className="mb-6 grid grid-cols-2 gap-2 rounded-full border border-black/10 bg-neutral-100 p-1"
       >
         {(["signup", "login"] as Mode[]).map((value) => (
           <button
@@ -69,8 +69,8 @@ export function SignupForm() {
             }}
             className={`rounded-full py-2.5 text-sm font-semibold transition ${
               mode === value
-                ? "bg-bronze text-ink"
-                : "text-paper/70 hover:text-bronze"
+                ? "bg-black text-white"
+                : "text-neutral-600 hover:text-black"
             }`}
           >
             {value === "signup" ? "Create account" : "Sign in"}
@@ -82,53 +82,53 @@ export function SignupForm() {
         {mode === "signup" ? (
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block">
-              <span className="mb-2 block text-sm text-muted">First name</span>
+              <span className="mb-2 block text-sm font-medium text-neutral-700">First name</span>
               <input
                 name="firstName"
                 required
                 autoComplete="given-name"
-                className="w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-paper outline-none ring-bronze/40 focus:ring-2"
+                className="h-12 w-full rounded-md border border-black/10 bg-white px-4 text-base text-black outline-none focus:border-gold"
               />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-muted">Last name</span>
+              <span className="mb-2 block text-sm font-medium text-neutral-700">Last name</span>
               <input
                 name="lastName"
                 autoComplete="family-name"
-                className="w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-paper outline-none ring-bronze/40 focus:ring-2"
+                className="h-12 w-full rounded-md border border-black/10 bg-white px-4 text-base text-black outline-none focus:border-gold"
               />
             </label>
           </div>
         ) : null}
 
         <label className="block">
-          <span className="mb-2 block text-sm text-muted">Email</span>
+          <span className="mb-2 block text-sm font-medium text-neutral-700">Email</span>
           <input
             name="email"
             type="email"
             required
             autoComplete="email"
-            className="w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-paper outline-none ring-bronze/40 focus:ring-2"
+            className="h-12 w-full rounded-md border border-black/10 bg-white px-4 text-base text-black outline-none focus:border-gold"
           />
         </label>
 
         {mode === "signup" ? (
           <>
             <label className="block">
-              <span className="mb-2 block text-sm text-muted">Mobile</span>
+              <span className="mb-2 block text-sm font-medium text-neutral-700">Mobile</span>
               <input
                 name="phone"
                 type="tel"
                 autoComplete="tel"
-                className="w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-paper outline-none ring-bronze/40 focus:ring-2"
+                className="h-12 w-full rounded-md border border-black/10 bg-white px-4 text-base text-black outline-none focus:border-gold"
               />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-muted">Plan you want</span>
+              <span className="mb-2 block text-sm font-medium text-neutral-700">Plan you want</span>
               <select
                 name="plan"
                 defaultValue={planFromUrl || "Not sure yet"}
-                className="w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-paper outline-none ring-bronze/40 focus:ring-2"
+                className="h-12 w-full rounded-md border border-black/10 bg-white px-4 text-base text-black outline-none focus:border-gold"
               >
                 <option>Not sure yet</option>
                 {offers.map((offer) => (
@@ -139,13 +139,13 @@ export function SignupForm() {
               </select>
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-muted">
+              <span className="mb-2 block text-sm font-medium text-neutral-700">
                 Main goal <span className="text-muted/60">(optional)</span>
               </span>
               <input
                 name="goal"
                 placeholder="Fat loss, strength, routine"
-                className="w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-paper outline-none ring-bronze/40 focus:ring-2"
+                className="h-12 w-full rounded-md border border-black/10 bg-white px-4 text-base text-black outline-none focus:border-gold"
               />
             </label>
           </>
@@ -154,7 +154,7 @@ export function SignupForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="w-full rounded-full bg-bronze py-3 font-semibold text-white transition hover:bg-bronze-2 disabled:opacity-60"
+          className="inline-flex min-h-12 w-full items-center justify-center rounded-full border-2 border-black bg-black text-sm font-semibold text-white transition hover:bg-transparent hover:text-black disabled:opacity-60"
         >
           {status === "sending"
             ? "Sending…"
@@ -165,13 +165,13 @@ export function SignupForm() {
 
         {message ? (
           <p
-            className={`text-sm ${status === "error" ? "text-red-300" : "text-bronze"}`}
+            className={`text-sm ${status === "error" ? "text-red-600" : "text-neutral-800"}`}
           >
             {message}
           </p>
         ) : null}
 
-        <p className="text-xs leading-relaxed text-muted">
+        <p className="text-xs leading-relaxed text-neutral-600">
           The client dashboard is launching soon. For now your details go
           straight to Paul, who confirms your plan and sets you up in the MFF
           app. Read our{" "}

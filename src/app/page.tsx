@@ -272,9 +272,9 @@ export default function HomePage() {
           <h2 className="mt-3 text-center text-4xl font-black">
             Transformations <span className="text-gold">Gallery</span>
           </h2>
-          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="scroll-row -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-8 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
             {gallery.map((item) => (
-              <article key={item.before} className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+              <article key={item.before} className="w-[84%] shrink-0 snap-center overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm sm:w-auto">
                 <Image src="/mff/1000065805-1.webp" alt="" width={1024} height={134} className="h-auto w-full" />
                 <BeforeAfter before={item.before} after={item.after} alt="MFF client before and after transformation" />
                 <Image src={item.banner} alt="" width={1024} height={260} className="h-auto w-full" />
@@ -304,7 +304,7 @@ export default function HomePage() {
             href={site.googleReviews}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 block text-center text-sm text-white/80 hover:text-white"
+            className="mt-1 flex min-h-11 items-center justify-center text-center text-sm text-white/80 hover:text-white"
           >
             {site.reviewsCount} five-star reviews on Google
           </a>
@@ -459,7 +459,7 @@ export default function HomePage() {
               correction and focused accountability.
             </p>
             <div
-              className="mx-auto mt-6 max-w-xl rounded-[15px] border border-white/55 border-l-4 px-4 py-4 text-left lg:mx-0"
+              className="mx-auto mt-6 max-w-xl rounded-[15px] border border-white/55 px-4 py-4 text-left lg:mx-0"
               style={{ backgroundColor: "#A68D412B" }}
             >
               <Kicker>Train With Purpose</Kicker>

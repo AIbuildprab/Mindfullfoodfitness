@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { reviews } from "@/lib/content";
 import { site } from "@/lib/site";
 
@@ -130,11 +130,15 @@ export function ReviewCarousel() {
     return () => window.clearInterval(timer);
   }, [paused, open]);
 
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  useEffect(() => {
-    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }, []);
+  const reduceMotion = useSyncExternalStore(
+    (notify) => {
+      const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+      query.addEventListener("change", notify);
+      return () => query.removeEventListener("change", notify);
+    },
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
 
   const go = (delta: number) => {
     setSliding(!reduceMotion);
@@ -238,7 +242,7 @@ export function ReviewCarousel() {
                 </p>
                 <button
                   type="button"
-                  className="mt-2 text-sm text-white/55 hover:text-white"
+                  className="mt-1 inline-flex min-h-11 items-center pr-3 text-sm text-white/70 hover:text-white"
                   onClick={() => setOpen(expanded ? null : review.name)}
                 >
                   {expanded ? "Hide" : "Read more"}

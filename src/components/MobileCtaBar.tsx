@@ -15,7 +15,7 @@ export function MobileCtaBar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (pathname === "/signup") return null;
+  if (pathname === "/signup" || pathname === "/login" || pathname === "/dashboard") return null;
 
   return (
     <div

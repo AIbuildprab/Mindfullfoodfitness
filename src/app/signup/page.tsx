@@ -22,11 +22,11 @@ const steps = [
 export default function SignupPage() {
   return (
     <>
-      <section className="bg-ink py-14 text-paper sm:py-20">
+      <section className="bg-neutral-50 py-14 text-neutral-900 sm:py-20">
         <Container className="grid gap-12 lg:grid-cols-[1.05fr_1fr]">
           <div>
             <Eyebrow>Start today</Eyebrow>
-            <h1 className="font-display mt-3 text-4xl uppercase leading-[0.95] sm:text-5xl">
+            <h1 className="mt-3 text-4xl font-bold leading-[1.05] text-black sm:text-5xl">
               Create your <span className="text-bronze">MFF account</span>
             </h1>
             <p className="mt-5 max-w-lg text-muted">
@@ -41,15 +41,15 @@ export default function SignupPage() {
             <ol className="mt-10 space-y-4">
               {steps.map((step, index) => (
                 <li key={step} className="flex gap-4">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-bronze/50 font-display text-sm text-bronze">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold/60 text-sm font-semibold text-gold">
                     {index + 1}
                   </span>
-                  <span className="pt-1 text-sm text-paper/85">{step}</span>
+                  <span className="pt-1 text-sm text-neutral-700">{step}</span>
                 </li>
               ))}
             </ol>
 
-            <div className="mt-10 rounded-2xl border border-white/10 bg-ink-2 p-6">
+            <div className="mt-10 rounded-2xl border border-black/10 bg-white p-6">
               <div className="flex items-start gap-5">
                 <Image
                   src="/app/app-programs.webp"
@@ -59,10 +59,10 @@ export default function SignupPage() {
                   className="hidden w-24 shrink-0 sm:block"
                 />
                 <div>
-                  <p className="font-display text-sm uppercase tracking-[0.2em] text-bronze">
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">
                     Inside the MFF app
                   </p>
-                  <ul className="mt-4 space-y-2 text-sm text-paper/80">
+                  <ul className="mt-4 space-y-2 text-sm text-neutral-700">
                     {appFeatures.map((feature) => (
                       <li key={feature}>— {feature}</li>
                     ))}
@@ -75,7 +75,7 @@ export default function SignupPage() {
           <div>
             <Suspense
               fallback={
-                <div className="rounded-2xl border border-white/10 bg-ink-2 p-8 text-sm text-muted">
+                <div className="rounded-2xl border border-black/10 bg-white p-8 text-sm text-muted">
                   Loading form…
                 </div>
               }

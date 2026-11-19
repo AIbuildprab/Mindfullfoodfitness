@@ -6,19 +6,38 @@ export function HeroMotion() {
   return (
     <section
       id="home"
-      className="relative isolate -mt-[88px] min-h-[calc(100dvh-2.25rem)] overflow-hidden bg-black pt-32 text-white lg:-mt-[79px] lg:pt-[144px]"
+      className="relative isolate -mt-[88px] min-h-[calc(100dvh-2.25rem)] overflow-hidden bg-black pt-[19rem] text-white sm:pt-[22rem] lg:-mt-[79px] lg:pt-[144px]"
     >
-      <Image
-        src="/mff/hero-bg.webp"
-        alt=""
-        fill
-        priority
-        className="object-cover"
-        sizes="100vw"
+      {/* Paul in the studio: right-hand portrait on desktop, full-bleed and dimmed on phones. */}
+      <div aria-hidden className="hero-photo absolute inset-x-0 top-0 h-[60%] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[58%]">
+        <Image
+          src="/mff/fallback.webp"
+          alt=""
+          fill
+          priority
+          className="object-cover object-[50%_10%]"
+          sizes="(min-width: 1024px) 58vw, 100vw"
+        />
+      </div>
+      <div
+        aria-hidden
+        className="absolute inset-0 hidden lg:block"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, #000 0%, #000 34%, rgba(0,0,0,0.78) 52%, rgba(0,0,0,0.15) 100%), linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 32%)",
+        }}
       />
       <div
-        className="absolute inset-0 opacity-[0.88]"
-        style={{ backgroundImage: "linear-gradient(135deg, #000000 55%, #00000070 100%)" }}
+        aria-hidden
+        className="absolute inset-0 lg:hidden"
+        style={{
+          backgroundImage:
+            "linear-gradient(0deg, #000 0%, #000 38%, rgba(0,0,0,0.55) 56%, rgba(0,0,0,0.1) 74%, rgba(0,0,0,0.45) 100%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="hero-glow pointer-events-none absolute -right-24 top-1/4 h-[28rem] w-[28rem] rounded-full bg-gold/25 blur-[120px]"
       />
       <div className="relative mx-auto w-full max-w-[1200px] px-4 pb-16 lg:pb-16">
           <div className="hero-pop mx-auto max-w-3xl text-center lg:mx-0 lg:text-left">
@@ -29,7 +48,7 @@ export function HeroMotion() {
             >
               Mindfull Food Fitness
             </Kicker>
-            <h1 className="hero-gold-in mt-4 text-[32px] leading-[1.15] font-black sm:text-[42px] sm:leading-[50px] lg:text-[56px] lg:leading-[64px]">
+            <h1 className="hero-gold-in mt-4 text-balance text-[32px] leading-[1.15] font-black sm:text-[42px] sm:leading-[50px] lg:text-[56px] lg:leading-[64px]">
               The Last Coach <span className="text-gold">You&apos;ll Ever Need</span>
             </h1>
             <ul className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 font-[family-name:var(--font-open-sans)] text-[16px] leading-6 font-normal text-white lg:justify-start">
@@ -44,7 +63,7 @@ export function HeroMotion() {
             </ul>
             <div className="hero-pop-up mx-auto mt-5 max-w-[612px] space-y-3 font-[family-name:var(--font-open-sans)] text-[15px] leading-6 font-normal text-white sm:text-[17px] sm:leading-[26px] lg:mx-0">
               <p>Stop chasing quick fixes. Start building a body you understand.</p>
-              <p>
+              <p className="hidden sm:block">
                 No gimmicks. No guesswork. Just expert coaching, real food, smart training and the knowledge to own
                 your results for life.
               </p>
