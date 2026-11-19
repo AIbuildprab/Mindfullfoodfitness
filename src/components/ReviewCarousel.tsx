@@ -189,7 +189,7 @@ export function ReviewCarousel() {
             type="button"
             aria-label="Previous review"
             onClick={() => go(-1)}
-            className="absolute top-1/2 -left-4 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-2xl text-white shadow md:inline-flex"
+            className="absolute top-1/2 -left-4 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-2xl text-white shadow md:inline-flex"
           >
             ‹
           </button>
@@ -257,7 +257,7 @@ export function ReviewCarousel() {
             type="button"
             aria-label="Next review"
             onClick={() => go(1)}
-            className="absolute top-1/2 -right-4 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-2xl text-white shadow md:inline-flex"
+            className="absolute top-1/2 -right-4 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-2xl text-white shadow md:inline-flex"
           >
             ›
           </button>
@@ -268,7 +268,7 @@ export function ReviewCarousel() {
             aria-label="Previous review"
             disabled={index === 0}
             onClick={() => go(-1)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-2xl text-white disabled:opacity-30"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-2xl text-white disabled:opacity-30"
           >
             ‹
           </button>
@@ -277,7 +277,7 @@ export function ReviewCarousel() {
             aria-label="Next review"
             disabled={reviews.length <= visibleCount}
             onClick={() => go(1)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-2xl text-white disabled:opacity-30"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-2xl text-white disabled:opacity-30"
           >
             ›
           </button>

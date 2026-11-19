@@ -12,7 +12,7 @@ function Social({ href, label, children }: { href: string; label: string; childr
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-gold text-white transition hover:bg-white hover:text-black"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-gold-deep text-white transition hover:bg-white hover:text-black"
     >
       {children}
     </a>

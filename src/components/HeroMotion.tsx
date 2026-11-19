@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Kicker } from "@/components/Brand";
-import { site } from "@/lib/site";
 
 export function HeroMotion() {
   return (
@@ -17,6 +16,20 @@ export function HeroMotion() {
           priority
           className="object-cover object-[50%_10%]"
           sizes="(min-width: 1024px) 58vw, 100vw"
+        />
+        {/* Silent loop of the About-section clip; sound stays in About. Hidden for reduced motion. */}
+        <video
+          aria-hidden
+          tabIndex={-1}
+          className="absolute inset-0 h-full w-full object-cover object-[50%_10%] motion-reduce:hidden"
+          src="/mff/hero-loop.mp4"
+          poster="/mff/fallback.webp"
+          autoPlay
+          muted
+          loop
+          playsInline
+          disablePictureInPicture
+          preload="auto"
         />
       </div>
       <div
@@ -71,16 +84,8 @@ export function HeroMotion() {
             </div>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a
-                href={site.bookingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-full border-2 border-gold bg-gold px-6 py-2.5 font-[family-name:var(--font-open-sans)] text-[15px] font-medium text-white transition hover:bg-transparent hover:text-gold sm:w-auto"
-              >
-                Book a Free Strategy Call
-              </a>
-              <a
                 href="#whats-included"
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-white px-6 py-2.5 font-[family-name:var(--font-open-sans)] text-[15px] font-medium text-black transition hover:bg-paper sm:w-auto"
+                className="inline-flex min-h-11 w-full items-center justify-center rounded-full border-2 border-white/70 bg-transparent px-6 py-2.5 font-[family-name:var(--font-open-sans)] text-[15px] font-medium text-white transition hover:border-white hover:bg-white hover:text-black sm:w-auto"
               >
                 See What’s Included
               </a>

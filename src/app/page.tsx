@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { BeforeAfter } from "@/components/BeforeAfter";
-import { btnGold, btnOutline, Kicker } from "@/components/Brand";
+import { btnGold, Kicker } from "@/components/Brand";
 import { ContactForm } from "@/components/ContactForm";
 import { GalleryVideos } from "@/components/GalleryVideos";
 import { GuideForm } from "@/components/GuideForm";
 import { HeroMotion } from "@/components/HeroMotion";
 import { PhaseTabs } from "@/components/PhaseTabs";
 import { PromiseCard } from "@/components/PromiseCard";
+import { PlanDetails } from "@/components/PlanDetails";
 import { Reveal } from "@/components/Reveal";
 import { ReviewCarousel } from "@/components/ReviewCarousel";
 import {
@@ -61,7 +62,7 @@ export default function HomePage() {
                 className="pointer-events-none absolute inset-0 z-30 h-full w-full"
               />
             </div>
-            <div className="rise-ltr absolute bottom-2 left-0 z-30 flex items-center gap-3 rounded-2xl bg-gold px-4 py-3 text-white shadow-lg sm:bottom-6">
+            <div className="rise-ltr absolute top-8 left-0 z-30 flex items-center gap-3 rounded-2xl bg-gold-deep px-4 py-3 text-white shadow-lg sm:top-12">
               <Image src="/mff/muscle.png" alt="" width={40} height={40} className="h-10 w-10" />
               <p>
                 <span className="block text-2xl font-black leading-none">17+</span>
@@ -98,9 +99,6 @@ export default function HomePage() {
               </p>
             </div>
             <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
-              <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" className={btnOutline}>
-                Book a Free Strategy Call
-              </a>
               <a href="#pricing" className={btnGold}>
                 See Pricing
               </a>
@@ -128,11 +126,6 @@ export default function HomePage() {
             </p>
             <div className="mt-8">
               <PhaseTabs />
-            </div>
-            <div className="mt-8 flex justify-center lg:justify-start">
-              <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" className={btnGold}>
-                Book a Free Strategy Call
-              </a>
             </div>
           </Reveal>
           <Reveal from="right" className="order-first lg:order-none">
@@ -240,11 +233,6 @@ export default function HomePage() {
                 </ul>
               ))}
             </div>
-            <div className="mt-6 flex justify-center lg:justify-start">
-              <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" className={btnGold}>
-                Book a Free Strategy Call
-              </a>
-            </div>
           </Reveal>
           <Reveal from="right" className="mx-auto w-full max-w-md">
             <div className="relative h-[340px] overflow-hidden rounded-2xl sm:h-[400px]">
@@ -328,38 +316,42 @@ export default function HomePage() {
             Three ways in. Same coaching, same standards — the difference is how far we take it. Every package is paid
             in full up front.
           </p>
-          <div className="mt-10 grid items-stretch gap-5 lg:h-[calc(100dvh-7rem)] lg:grid-cols-3">
-            {packages.map((item, index) => (
-              <Reveal key={item.id} delay={index * 100} className="h-full min-h-0">
+          <div className="mt-12 grid items-stretch gap-8 lg:grid-cols-3 lg:gap-5">
+            {packages.map((item) => (
               <article
-                className={`relative flex h-full min-h-0 flex-col rounded-3xl bg-white p-6 shadow-sm ${
+                key={item.id}
+                className={`lift relative flex h-full flex-col rounded-3xl bg-white p-6 shadow-sm ${
                   "highlighted" in item && item.highlighted ? "ring-2 ring-gold" : "ring-1 ring-gold/55"
                 }`}
               >
                 {"badge" in item && item.badge ? (
-                  <p className="absolute top-0 left-1/2 z-10 inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 rounded-full bg-gold px-4 py-1.5 text-xs font-bold tracking-[0.14em] text-white uppercase">
+                  <p className="absolute top-0 left-1/2 z-10 inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 rounded-full bg-gold-deep px-4 py-1.5 text-xs font-bold tracking-[0.14em] text-white uppercase">
                     <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" aria-hidden fill="currentColor">
                       <path d="M12 2.6 14.7 8.8l6.7.6-5.1 4.4 1.6 6.5L12 17.8 6.1 20.3l1.6-6.5L2.6 9.4l6.7-.6L12 2.6Z" />
                     </svg>
                     {item.badge}
                   </p>
                 ) : null}
-                <div className="shrink-0 text-center">
+                <div className="text-center">
                   <Image src={item.icon} alt="" width={48} height={48} className="mx-auto h-12 w-12 brightness-0" />
                   <h3 className="mt-2 text-lg font-extrabold text-black">{item.kicker}</h3>
                   {"save" in item && item.save ? <p className="mt-1 text-sm font-semibold">{item.save}</p> : null}
                 </div>
-                <div className="plan-scroll mt-3 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pe-1">
+                <div className="mt-4 text-center">
+                  <p className="text-3xl font-black">{item.priceLabel}</p>
+                </div>
+                <div className="mt-5">
                   {item.lead ? <p className="text-sm font-semibold">{item.lead}</p> : null}
                   {item.summary ? <p className="mt-2 text-sm leading-relaxed text-neutral-700">{item.summary}</p> : null}
                   {"note" in item && item.note ? (
                     <p className="mt-2 text-sm leading-relaxed text-neutral-700">{item.note}</p>
                   ) : null}
-                  <p className="mt-4 text-sm font-semibold">What’s included:</p>
-                  <ul className="mt-2 space-y-1.5">
+                </div>
+                <PlanDetails label="What’s included">
+                  <ul className="space-y-1.5">
                     {item.features.map((feature) => (
                       <li key={feature} className="flex gap-2 text-sm leading-relaxed text-neutral-700">
-                        <span aria-hidden className="text-gold">
+                        <span aria-hidden className="text-gold-deep">
                           ✓
                         </span>
                         {feature}
@@ -372,27 +364,16 @@ export default function HomePage() {
                   {"closer" in item && item.closer ? (
                     <p className="mt-4 text-sm font-semibold">{item.closer}</p>
                   ) : null}
-                </div>
-                <div className="mt-auto shrink-0 pt-6">
-                  <p className="text-2xl font-black">{item.priceLabel}</p>
-                  <a
-                    href={site.bookingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${btnGold} mt-4 w-full`}
-                  >
-                    Book a Free Strategy Call
-                  </a>
-                </div>
+                </PlanDetails>
               </article>
-              </Reveal>
             ))}
           </div>
 
+          <span id="book" className="block scroll-mt-28" />
           <Reveal className="mt-10 rounded-3xl bg-white p-6 text-center shadow-sm sm:p-10">
             <h3 className="text-xl font-black tracking-wide uppercase">Not sure which option is right for you?</h3>
             <p className="mx-auto mt-4 max-w-2xl">You don’t have to figure it out alone.</p>
-            <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" className={`${btnGold} mt-5`}>
+            <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" className={`${btnGold} sheen mt-5`}>
               Book a FREE Strategy Call
             </a>
             <p className="mx-auto mt-5 max-w-md">
@@ -434,7 +415,7 @@ export default function HomePage() {
             <div className="absolute top-7 right-[12.5%] left-[12.5%] hidden h-px bg-gold lg:block" />
             {roadmap.map((step) => (
               <article key={step.n} className="relative">
-                <p className="relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold text-[22px] font-semibold text-white">
+                <p className="relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold-deep text-[22px] font-semibold text-white">
                   {step.n}
                 </p>
                 <h3 className="mt-4 text-sm font-semibold tracking-wide uppercase">{step.title}</h3>
@@ -489,11 +470,6 @@ export default function HomePage() {
             </div>
             <p className="mt-1 text-sm text-white">10-session block — 20% discount.</p>
             <p className="mt-3 text-sm text-white/80 italic">Limited spaces available, subject to availability.</p>
-            <div className="mt-6 flex justify-center lg:justify-start">
-              <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" className={btnGold}>
-                Book a Free Strategy Call
-              </a>
-            </div>
           </div>
         </div>
         <div className="relative mx-auto mt-16 grid max-w-6xl items-start gap-12 px-5 sm:px-8 lg:grid-cols-2">
@@ -511,7 +487,7 @@ export default function HomePage() {
           </p>
           <div className="mt-6 rounded-2xl border border-gold/70 px-5 py-6 sm:px-7">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-gold px-3 py-1 text-xs font-bold tracking-[0.12em] text-white uppercase">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-deep px-3 py-1 text-xs font-bold tracking-[0.12em] text-white uppercase">
                 <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" aria-hidden fill="currentColor">
                   <path d="M12 2.6 14.7 8.8l6.7.6-5.1 4.4 1.6 6.5L12 17.8 6.1 20.3l1.6-6.5L2.6 9.4l6.7-.6L12 2.6Z" />
                 </svg>
@@ -570,7 +546,7 @@ export default function HomePage() {
             href="https://www.google.com/maps?ll=52.660714,-1.076883&z=16&t=m&hl=en&gl=GB&mapclient=embed&cid=4673350107604756873"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-gold px-5 py-3 text-sm font-bold tracking-[0.14em] text-gold uppercase transition hover:bg-gold hover:text-white"
+            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-gold px-5 py-3 text-sm font-bold tracking-[0.14em] text-gold uppercase transition hover:bg-gold-deep hover:text-white"
           >
             Open in Google Maps
             <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden fill="none" stroke="currentColor" strokeWidth="2">
@@ -644,7 +620,7 @@ export default function HomePage() {
       </section>
 
       <section id="contact" className="bg-white px-4 py-16 sm:px-8 sm:py-20">
-        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[20px] bg-gold text-white shadow-[0_0_40px_rgba(0,0,0,0.06)] lg:grid-cols-[minmax(280px,38%)_1fr]">
+        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[20px] bg-gold-deep text-white shadow-[0_0_40px_rgba(0,0,0,0.06)] lg:grid-cols-[minmax(280px,38%)_1fr]">
           <div className="relative h-full min-h-[260px] sm:min-h-[420px] lg:min-h-0">
             <Image
               src="/mff/download-3.webp"

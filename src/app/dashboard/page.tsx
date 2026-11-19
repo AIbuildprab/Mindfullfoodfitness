@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { SignOutButton } from "@/components/SignOutButton";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -8,8 +11,25 @@ export const metadata: Metadata = {
 
 const tiles = ["Today’s workout", "Nutrition", "Progress", "Check-ins", "Messages", "Billing"];
 
-// Placeholder shell for the upcoming client dashboard. Add an auth guard here.
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login?next=/dashboard");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("first_name, last_name, plan")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  const displayName =
+    [profile?.first_name, profile?.last_name].filter(Boolean).join(" ") ||
+    user.email ||
+    "there";
+
   return (
     <section className="bg-neutral-50 py-12 sm:py-16">
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
@@ -17,10 +37,12 @@ export default function DashboardPage() {
           Client dashboard
         </p>
         <h1 className="mt-3 text-4xl font-bold text-black sm:text-5xl">
-          Your <span className="text-gold">dashboard</span>
+          Welcome, <span className="text-gold">{displayName}</span>
         </h1>
         <p className="mt-4 max-w-lg text-neutral-600">
-          Coming soon. This is where the sections below will live.
+          {profile?.plan
+            ? `Plan: ${profile.plan}. Sections below are coming soon.`
+            : "Your coaching hub. Sections below are coming soon."}
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {tiles.map((t) => (
@@ -30,12 +52,15 @@ export default function DashboardPage() {
             </div>
           ))}
         </div>
-        <Link
-          href="/"
-          className="mt-10 inline-flex min-h-12 items-center rounded-full border-2 border-black px-6 text-sm font-semibold text-black transition hover:bg-black hover:text-white"
-        >
-          Back to site
-        </Link>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Link
+            href="/"
+            className="inline-flex min-h-12 items-center rounded-full border-2 border-black px-6 text-sm font-semibold text-black transition hover:bg-black hover:text-white"
+          >
+            Back to site
+          </Link>
+          <SignOutButton />
+        </div>
       </div>
     </section>
   );

@@ -31,7 +31,7 @@ export function Kicker({
 }
 
 export const btnGold =
-  "inline-flex min-h-12 items-center justify-center rounded-full border-2 border-gold bg-gold px-[30px] py-[15px] font-[family-name:var(--font-open-sans)] text-base font-medium text-white transition hover:bg-transparent hover:text-gold";
+  "inline-flex min-h-12 items-center justify-center rounded-full border-2 border-gold-deep bg-gold-deep px-[30px] py-[15px] font-[family-name:var(--font-open-sans)] text-base font-medium text-white transition hover:bg-transparent hover:text-gold-deep";
 
 export const btnOutline =
-  "inline-flex min-h-11 items-center justify-center rounded-full border border-gold bg-transparent px-7 py-3 text-sm font-semibold text-gold transition hover:bg-gold hover:text-white";
+  "inline-flex min-h-11 items-center justify-center rounded-full border border-gold bg-transparent px-7 py-3 text-sm font-semibold text-gold transition hover:bg-gold-deep hover:text-white";

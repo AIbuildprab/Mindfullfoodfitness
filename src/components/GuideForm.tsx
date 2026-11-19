@@ -48,7 +48,7 @@ export function GuideForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="inline-flex h-12 items-center justify-center rounded-lg bg-gold px-5 text-sm font-semibold text-white hover:bg-gold-2 disabled:opacity-60"
+        className="inline-flex h-12 items-center justify-center rounded-lg bg-gold-deep px-5 text-sm font-semibold text-white hover:bg-gold-2 disabled:opacity-60"
       >
         {status === "sending" ? "Sending…" : "Send me the guide"}
       </button>

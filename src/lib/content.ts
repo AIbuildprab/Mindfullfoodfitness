@@ -232,7 +232,7 @@ export const packages = [
       "Custom nutrition updates as you move from fat loss into building",
       "Fuel Source Education — what to eat, when, and why it matters for your body",
       "Mindset challenges and accountability tasks",
-      "Mid-point progress review and plan reset (suggested addition — gives this package something the 3-month doesn’t have)",
+      "Mid-point progress review and plan reset",
     ],
     place:
       "Where it sits in the system: Phases 1–2 — Foundation & Fat Loss complete, then into Build.",

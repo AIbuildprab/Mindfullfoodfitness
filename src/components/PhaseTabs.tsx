@@ -23,7 +23,7 @@ export function PhaseTabs() {
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(index)}
               className={`min-h-11 rounded-full px-4 text-sm font-semibold transition ${
-                selected ? "bg-gold text-white" : "bg-white/10 text-white hover:bg-white/20"
+                selected ? "bg-gold-deep text-white" : "bg-white/10 text-white hover:bg-white/20"
               }`}
             >
               {item.tab}

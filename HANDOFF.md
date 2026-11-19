@@ -1,21 +1,31 @@
 # Handoff
 
-Repo: `Mindfullfoodfitness`, branch `Dev`. Nothing committed yet.
+Repo: `Mindfullfoodfitness`, branch `Dev`. Last commit: `1b2f2bb`. Changes since then are uncommitted.
 
-## Audit rounds (Impeccable, 3 rounds)
-**Round 0 checklist (found):** 9-link nav crowding the logo; stock gym hero photo (red floor, green rig) hidden under a heavy overlay; gallery 9,400px tall on phones; slow 2.85s section reveals; tap targets under 44px; detector flagged a thick side border; 1 lint error.
-**Round 1 (fixed):**
-- Nav: 9 links grouped to 5 (About, Programme ▾, Pricing, Results ▾, Contact) + Sign in + Book CTA. Dropdowns work on hover, click, keyboard and Escape. Mobile menu shows the same groups. Nav now fits at 1024px, so the hamburger starts below `lg`.
-- Hero: Paul's studio portrait (`/mff/fallback.webp`) replaces the stock gym, with gradient fades, a drifting gold glow and a slow zoom-in. Mobile gets a full-width portrait on top with the copy below it; the long middle paragraph is hidden on phones.
-- Motion: reveals 2.85s -> 1.1s, gold buttons lift on hover, header colour change 1s -> 0.3s.
-- Mobile: gallery photos and videos are swipe rows (gallery 9,438px -> 1,260px), review "Read more", footer links, socials, logo and Google reviews link all reach 44px.
-**Round 2 (re-audit):** `impeccable detect` clean, `tsc` clean, `eslint` 0 errors (2 `<img>` warnings), `npm run build` passes, no horizontal overflow at 390px.
-**Round 3:** visual check of hero + menu at 390 / 1024 / 1440; fixed header turning light while the mobile menu opened.
+## Done since the designer critique (Impeccable critique scored 21/32)
+- 6-month card: removed the leaked draft note; the "Mid-point progress review and plan reset" bullet stays (Paul confirmed it is real).
+- Pricing (`#pricing`): price and button now sit directly under each tier name; no fixed card height or inner scrolling; no fade-in; "What's included" is a collapsible (`src/components/PlanDetails.tsx`), open on desktop and collapsed on phones. All wording and prices unchanged. Phone height 3,464px -> 2,369px.
+- Contrast: new `--gold-deep` (#86712f, 4.7:1 with white text) used for filled gold buttons, badges, the contact panel and the sticky bar. The brighter gold stays for text on dark backgrounds.
+- Hero: second button is now an outline so the gold button leads.
+- Motion: reveals 1.1s -> 0.7s and trigger earlier; hero entrance 1.4-1.7s -> 0.8-0.9s; no more scale-from-20% headline.
+- Tap targets: review arrows 44px, contact checkbox 20px inside a 44px row, header social icons 32px.
+- `Hero.mp4` 11.8 MB -> 3.1 MB (540x960, audio kept).
+- tsc, eslint (0 errors), `npm run build` and `impeccable detect` all clean.
 
-## Not done / ideas
-- The "Programme" quote and the About-section video both show Paul in the same studio frame as the new hero. Consider a different still for one of them.
-- Remaining tap targets under 44px: checkbox in the contact form, "privacy policy" link (39px).
-- Pricing (3,464px) and the section after it (2,594px) are still long on phones; candidates for swipe rows or accordions.
-- No PRODUCT.md / DESIGN.md yet (`impeccable init` would create them). A newer Impeccable (v4.10.0) exists; `npx impeccable update` when you want it.
+## Still open
+- Needs Paul's decision: the "17+ Years' experience" badge (reads as 17 years of coaching; 17 years were in kitchens, coaching since 2018); scarcity lines ("Only a few spaces open each quarter"); hand-typed relative review dates; no payment-plan price for the 12-month option.
+- Remaining phone tap target: "privacy policy" link (36px).
+- Page is still about 18,400px tall on phones: merge Roadmap into Programme, cut gallery and duplicate quotes, tuck away the in-person and gym blocks, add a "from £750" hint near the hero, add a short FAQ.
+- Chef touches (menu-style pricing, phases as courses, food imagery) need photos from Paul.
+- Small gold text on white (section labels, ticks) is about 3.2:1; large headings pass.
+- Two font preloads (Manrope / Open Sans) warn as unused; left as is to avoid a font flash.
+- Re-run `/impeccable critique` to record a new score.
 - Login/dashboard: `src/lib/auth.ts` is a stub; `/dashboard` has no auth guard.
-- Commit to `Dev`: the tree also contains older uncommitted files (assets/, public/fonts, public/plates, src/styles).
+- Untracked and not committed: `.impeccable/`, `assets/`, `public/fonts`, `public/plates`, `public/mff/people`, `src/styles`.
+
+## Latest (uncommitted)
+- Booking CTA: every "Book a Free Strategy Call" button removed (header, mobile menu, hero, pricing cards, About, in-person, sticky mobile bar). One booking section remains, under the pricing cards ("Not sure which option is right for you?", `id="book"`). `MobileCtaBar.tsx` deleted. The contact intro still says "or book a free call" as plain text.
+- Mobile nav: compact accordion (Programme / Results), Sign in full width, dimmed backdrop.
+- Animation: mobile menu slides in with staggered items; gold scroll-progress line under the header; header tightens on scroll; pricing cards lift on hover; pill buttons press-scale; slow sheen on the one booking button. All respect reduced motion.
+- Hero now plays a silent loop (`public/mff/hero-loop.mp4`); sound stays in the About video.
+- `/login` restyled as a dark full-screen page.

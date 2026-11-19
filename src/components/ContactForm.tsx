@@ -84,11 +84,11 @@ export function ContactForm() {
         Apply now for the Mindfull Food Fitness 12-Month Transformation — or tell me which package you’re looking at
         and I’ll come back to you within 24 hours.
       </p>
-      <label className="flex items-start gap-2 text-sm text-white sm:col-span-2">
-        <input name="privacy" type="checkbox" required className="mt-1 h-4 w-4 accent-black" />
+      <label className="flex min-h-11 items-start gap-3 py-1 text-sm text-white sm:col-span-2">
+        <input name="privacy" type="checkbox" required className="mt-0.5 h-5 w-5 shrink-0 accent-black" />
         <span>
           By sending this you agree to the{" "}
-          <Link href="/privacy" className="underline">
+          <Link href="/privacy" className="inline-block py-2 underline">
             privacy policy
           </Link>
           .

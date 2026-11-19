@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { LoginForm } from "@/components/LoginForm";
-import { appFeatures } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Sign in",
@@ -8,30 +9,35 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
+// Full-screen, chrome-free sign-in: covers the site header and footer.
 export default function LoginPage() {
   return (
-    <section className="bg-neutral-50 py-12 sm:py-20">
-      <div className="mx-auto grid w-full max-w-6xl items-start gap-10 px-5 sm:px-8 lg:grid-cols-2 lg:gap-16">
-        <div className="order-2 lg:order-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold">
-            Client area
-          </p>
-          <h1 className="mt-3 text-4xl font-bold leading-[1.05] text-black sm:text-5xl">
-            Welcome <span className="text-gold">back</span>
-          </h1>
-          <p className="mt-5 max-w-md text-neutral-600">
-            Your plan, your numbers and your check-ins with Paul, all in one place.
-          </p>
-          <ul className="mt-8 space-y-2 text-sm text-neutral-700">
-            {appFeatures.map((f) => (
-              <li key={f}>— {f}</li>
-            ))}
-          </ul>
+    <div className="fixed inset-0 z-[60] overflow-y-auto bg-[#0f0f10] text-white">
+      <Link
+        href="/"
+        className="absolute top-3 left-3 inline-flex min-h-10 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 text-[13px] font-semibold sm:min-h-11 sm:gap-2 sm:px-5 sm:text-sm transition hover:border-gold hover:text-gold-2 sm:top-7 sm:left-7"
+      >
+        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M19 12H5m6-6-6 6 6 6" />
+        </svg>
+        Back to home
+      </Link>
+
+      <main className="mx-auto flex min-h-full w-full max-w-[500px] flex-col justify-center px-5 pt-16 pb-6 sm:pt-16 sm:pb-12">
+        <div className="mb-5 text-center sm:mb-8">
+          <Image
+            src="/brand/Logo_Inverted.png"
+            alt="Mindfull Food Fitness"
+            width={168}
+            height={56}
+            priority
+            className="mx-auto h-8 w-auto sm:h-11"
+            style={{ width: "auto" }}
+          />
+          <h1 className="mt-3 text-base font-medium text-white/60 sm:mt-5 sm:text-lg">Welcome back</h1>
         </div>
-        <div className="order-1 lg:order-2">
-          <LoginForm />
-        </div>
-      </div>
-    </section>
+        <LoginForm />
+      </main>
+    </div>
   );
 }

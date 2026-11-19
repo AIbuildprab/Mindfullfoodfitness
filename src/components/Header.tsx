@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { nav, navGroups, site } from "@/lib/site";
 import { UserIcon } from "./UserIcon";
 
@@ -14,7 +14,7 @@ function Social({ href, label, children }: { href: string; label: string; childr
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="inline-flex items-center justify-center rounded-full bg-white p-1.5 text-black transition hover:bg-black hover:text-white"
+      className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition hover:bg-black hover:text-white"
     >
       {children}
     </a>
@@ -27,10 +27,17 @@ export function Header() {
   const [active, setActive] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [group, setGroup] = useState<string | null>(null);
+  const [mGroup, setMGroup] = useState<string | null>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
   const solid = scrolled || open || pathname === "/privacy" || pathname === "/terms" || pathname === "/login" || pathname === "/dashboard" || pathname === "/signup";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const bar = progressRef.current;
+      if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(window.scrollY / max, 1) : 0})`;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -90,11 +97,14 @@ export function Header() {
     };
   }, []);
 
-  const close = () => setOpen(false);
+  const close = () => {
+    setOpen(false);
+    setMGroup(null);
+  };
 
   return (
     <>
-      <div className="hidden bg-gold text-white lg:block">
+      <div className="hidden bg-gold-deep text-white lg:block">
         <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 py-2">
           <a
             href={`mailto:${site.email}`}
@@ -131,7 +141,16 @@ export function Header() {
           solid ? "bg-black" : "bg-black/[0.07]"
         }`}
       >
-        <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 py-3 lg:py-3.5">
+        <div
+          ref={progressRef}
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-gold"
+        />
+        <div
+          className={`mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 transition-[padding] duration-300 ${
+            scrolled ? "py-2 lg:py-2.5" : "py-3 lg:py-3.5"
+          }`}
+        >
           <Link href="/#home" onClick={close} aria-label="Mindfull Food Fitness — home" className="inline-flex min-h-11 shrink-0 items-center">
             <Image
               src="/brand/Logo_Inverted.png"
@@ -230,15 +249,6 @@ export function Header() {
             <span className="hidden xl:inline">Sign in</span>
           </Link>
 
-          <a
-            href={site.bookingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden shrink-0 rounded-full border-2 border-gold bg-gold px-5 py-2.5 font-[family-name:var(--font-open-sans)] text-[15px] font-medium text-white transition hover:bg-transparent hover:text-gold lg:inline-flex"
-          >
-            Book a Free Strategy Call
-          </a>
-
           <div className="ml-auto flex items-center gap-2 lg:hidden">
           <Link
             href="/login"
@@ -268,55 +278,82 @@ export function Header() {
         </div>
 
         {open ? (
-          <div id="mobile-menu" className="safe-bottom max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-black px-5 py-3 lg:hidden">
-            <nav className="flex flex-col" aria-label="Menu">
-              {navGroups.map((entry) =>
-                "items" in entry ? (
-                  <div key={entry.id} className="border-b border-white/10 py-2">
-                    <p className="pb-1 pt-2 font-[family-name:var(--font-open-sans)] text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+          <>
+            <button
+              type="button"
+              aria-label="Close menu"
+              tabIndex={-1}
+              onClick={close}
+              className="menu-fade fixed inset-0 -z-10 cursor-default bg-black/60 lg:hidden"
+            />
+            <div
+              id="mobile-menu"
+              className="menu-in safe-bottom max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-black px-5 pt-1 lg:hidden"
+            >
+              <nav className="flex flex-col font-[family-name:var(--font-open-sans)]" aria-label="Menu">
+                {navGroups.map((entry, idx) => {
+                  if ("items" in entry) {
+                    const expanded = mGroup === entry.id;
+                    return (
+                      <div key={entry.id} className="menu-item border-b border-white/10" style={{ "--i": idx } as CSSProperties}>
+                        <button
+                          type="button"
+                          aria-expanded={expanded}
+                          onClick={() => setMGroup(expanded ? null : entry.id)}
+                          className="flex min-h-12 w-full items-center justify-between text-[15px] text-white"
+                        >
+                          {entry.label}
+                          <svg
+                            viewBox="0 0 12 12"
+                            className={`h-3 w-3 text-gold transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+                            fill="none"
+                            aria-hidden
+                          >
+                            <path d="m2 4 4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </button>
+                        {expanded ? (
+                          <div className="pb-2 pl-3">
+                            {entry.items.map((item) => (
+                              <Link
+                                key={item.id}
+                                href={item.href}
+                                onClick={close}
+                                className="flex min-h-11 items-center text-[14px] text-white/75 hover:text-gold"
+                              >
+                                {item.label}
+                              </Link>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  }
+                  return (
+                    <Link
+                      key={entry.id}
+                      href={entry.href}
+                      onClick={close}
+                      className="menu-item flex min-h-12 items-center border-b border-white/10 text-[15px] text-white"
+                      style={{ "--i": idx } as CSSProperties}
+                    >
                       {entry.label}
-                    </p>
-                    {entry.items.map((item) => (
-                      <Link
-                        key={item.id}
-                        href={item.href}
-                        onClick={close}
-                        className="flex min-h-11 items-center pl-3 text-[15px] text-white/90"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                ) : (
+                    </Link>
+                  );
+                })}
+                <div className="menu-item py-3" style={{ "--i": 5 } as CSSProperties}>
                   <Link
-                    key={entry.id}
-                    href={entry.href}
+                    href="/login"
                     onClick={close}
-                    className="flex min-h-12 items-center border-b border-white/10 text-base"
+                    className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-white/25 px-5 text-sm font-medium text-white"
                   >
-                    {entry.label}
+                    <UserIcon className="h-4 w-4" />
+                    Sign in
                   </Link>
-                ),
-              )}
-              <Link
-                href="/login"
-                onClick={close}
-                className="flex min-h-12 items-center gap-2 border-b border-white/10 text-base"
-              >
-                <UserIcon className="h-5 w-5" />
-                Sign in
-              </Link>
-              <a
-                href={site.bookingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={close}
-                className="mt-4 flex min-h-12 items-center justify-center rounded-full bg-gold font-semibold text-white"
-              >
-                Book a Free Strategy Call
-              </a>
-            </nav>
-          </div>
+                </div>
+              </nav>
+            </div>
+          </>
         ) : null}
       </header>
     </>
