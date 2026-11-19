@@ -28,6 +28,7 @@
 }
 
 html {
+  background: #000;
   scroll-behavior: smooth;
   scroll-padding-top: 7rem;
   -webkit-text-size-adjust: 100%;

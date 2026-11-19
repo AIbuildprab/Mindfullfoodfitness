@@ -5,7 +5,7 @@ export function HeroMotion() {
   return (
     <section
       id="home"
-      className="relative isolate -mt-[88px] min-h-[calc(100dvh-2.25rem)] overflow-hidden bg-black pt-[19rem] text-white sm:pt-[22rem] lg:-mt-[79px] lg:pt-[144px]"
+      className="relative isolate -mt-[69px] min-h-[100svh] overflow-hidden bg-black pt-[min(19rem,35svh)] text-white sm:pt-[22rem] lg:-mt-[79px] lg:min-h-[calc(100dvh-2.25rem)] lg:pt-[144px]"
     >
       {/* Paul in the studio: right-hand portrait on desktop, full-bleed and dimmed on phones. */}
       <div aria-hidden className="hero-photo absolute inset-x-0 top-0 h-[60%] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[58%]">

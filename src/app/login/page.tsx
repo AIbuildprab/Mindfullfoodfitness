@@ -23,8 +23,8 @@ export default function LoginPage() {
         Back to home
       </Link>
 
-      <main className="mx-auto flex min-h-full w-full max-w-[500px] flex-col justify-center px-5 pt-16 pb-6 sm:pt-16 sm:pb-12">
-        <div className="mb-5 text-center sm:mb-8">
+      <main className="mx-auto flex min-h-full w-full max-w-[500px] flex-col justify-start px-5 pt-16 pb-6 sm:pt-14 sm:pb-6">
+        <div className="mb-5 text-center sm:mb-6">
           <Image
             src="/brand/Logo_Inverted.png"
             alt="Mindfull Food Fitness"

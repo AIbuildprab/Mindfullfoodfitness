@@ -49,3 +49,4 @@ next-env.d.ts
 # internal team notes (do not commit)
 HANDOFF.md
 HANDOFF*.md
+supabase/.temp/
