@@ -1,23 +1,65 @@
-// Minimal service worker: offline fallback + cached static assets.
-// Pages, auth and API calls always go to the network.
-const VERSION = "mff-v1";
+// Mindfull Food Fitness service worker.
+//
+// Strategy
+// - Static, versioned assets (/_next/static, fonts, icons, images): stale-while-revalidate.
+// - Page navigations: network first, branded offline page if the network is down.
+//   HTML is NEVER cached, so signed-in pages (dashboard, coach, account) are never stored.
+// - Everything else (API routes, auth, Supabase, anything cross-origin): untouched, straight to network.
+const VERSION = "mff-v2";
 const STATIC = `${VERSION}-static`;
+const IMAGES = `${VERSION}-images`;
 const OFFLINE_URL = "/offline.html";
+const MAX_IMAGES = 80;
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(STATIC).then((c) => c.addAll([OFFLINE_URL, "/icons/icon-192.png"])).then(() => self.skipWaiting()),
+    caches
+      .open(STATIC)
+      .then((c) => c.addAll([OFFLINE_URL, "/icons/icon-192.png", "/brand/Logo_Outlined.png"])),
   );
+  // A new worker waits until the page asks it to take over (see ServiceWorker.tsx),
+  // so an update never swaps assets under someone mid-workout.
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data === "SKIP_WAITING") self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => Promise.all(keys.filter((k) => !k.startsWith(VERSION)).map((k) => caches.delete(k))))
-      .then(() => self.clients.claim()),
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.filter((k) => !k.startsWith(VERSION)).map((k) => caches.delete(k)));
+      if (self.registration.navigationPreload) await self.registration.navigationPreload.enable();
+      await self.clients.claim();
+    })(),
   );
 });
+
+async function trim(cacheName, max) {
+  const cache = await caches.open(cacheName);
+  const keys = await cache.keys();
+  if (keys.length > max) await Promise.all(keys.slice(0, keys.length - max).map((k) => cache.delete(k)));
+}
+
+function staleWhileRevalidate(event, cacheName, max) {
+  const req = event.request;
+  event.respondWith(
+    caches.open(cacheName).then(async (cache) => {
+      const hit = await cache.match(req);
+      const network = fetch(req)
+        .then((res) => {
+          if (res.ok) {
+            cache.put(req, res.clone());
+            if (max) event.waitUntil(trim(cacheName, max));
+          }
+          return res;
+        })
+        .catch(() => hit || Response.error());
+      return hit || network;
+    }),
+  );
+}
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
@@ -26,27 +68,28 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (req.mode === "navigate") {
-    event.respondWith(fetch(req).catch(() => caches.match(OFFLINE_URL)));
+    event.respondWith(
+      (async () => {
+        try {
+          const preload = await event.preloadResponse;
+          return preload || (await fetch(req));
+        } catch {
+          const cache = await caches.open(STATIC);
+          return (await cache.match(OFFLINE_URL)) || Response.error();
+        }
+      })(),
+    );
     return;
   }
 
-  const isStatic =
-    url.pathname.startsWith("/_next/static/") ||
-    url.pathname.startsWith("/icons/") ||
-    url.pathname.startsWith("/fonts/") ||
-    /\.(?:png|jpg|jpeg|webp|svg|woff2)$/.test(url.pathname);
-  if (!isStatic) return;
+  const p = url.pathname;
+  if (p.startsWith("/api/") || p.startsWith("/auth/")) return;
 
-  event.respondWith(
-    caches.open(STATIC).then(async (cache) => {
-      const hit = await cache.match(req);
-      const fresh = fetch(req)
-        .then((res) => {
-          if (res.ok) cache.put(req, res.clone());
-          return res;
-        })
-        .catch(() => hit);
-      return hit || fresh;
-    }),
-  );
+  if (p.startsWith("/_next/static/") || p.startsWith("/fonts/") || p.startsWith("/icons/") || p.startsWith("/brand/")) {
+    staleWhileRevalidate(event, STATIC);
+    return;
+  }
+  if (p.startsWith("/_next/image") || /\.(?:png|jpe?g|webp|avif|svg|gif)$/i.test(p)) {
+    staleWhileRevalidate(event, IMAGES, MAX_IMAGES);
+  }
 });

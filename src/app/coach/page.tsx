@@ -18,12 +18,12 @@ export default async function CoachPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role, first_name")
     .eq("id", user.id)
     .maybeSingle();
 
   // Clients go to their own dashboard.
   if (profile?.role !== "personal_trainer") redirect("/dashboard");
 
-  return <CoachDashboard />;
+  return <CoachDashboard userId={user.id} name={profile?.first_name || "Paul"} />;
 }

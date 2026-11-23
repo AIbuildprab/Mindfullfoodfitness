@@ -7,6 +7,8 @@ import { useState, type ReactNode } from "react";
 import { signOut } from "@/lib/auth";
 import { scrollTopSoon } from "@/lib/scroll-top";
 import type { NavItem } from "@/lib/dashboard-nav";
+import { InstallPrompt, OfflineBanner, ThemeColor } from "./AppChrome";
+import { FloatingTabBar } from "./FloatingTabBar";
 import { Icon } from "./Icons";
 
 type Props = {
@@ -75,13 +77,13 @@ export function ClientShell({ items, active, onSelect, name, badges, action, hom
     <div data-app-shell="full" className="flex min-h-dvh flex-col bg-[#F6F4EF] text-[#0B0B0C]">
       <header className="sticky top-0 z-30 border-b border-[#E7E3D9] bg-white/90 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-[1240px] items-center gap-3 px-4 sm:px-6 lg:gap-6">
-          <Link href={homeHref} aria-label="Home" className="flex h-10 shrink-0 items-center rounded-xl bg-[#0B0B0C] px-3">
+          <Link href={homeHref} aria-label="Home" className="flex h-10 shrink-0 items-center">
             <Image
-              src="/brand/Logo_Inverted.png"
+              src="/brand/Logo_Outlined.png"
               alt="Mindfull Food Fitness"
-              width={120}
-              height={29}
-              className="h-6 w-auto"
+              width={160}
+              height={41}
+              className="h-8 w-auto"
               style={{ width: "auto" }}
             />
           </Link>
@@ -119,44 +121,23 @@ export function ClientShell({ items, active, onSelect, name, badges, action, hom
           </div>
         </div>
       </header>
+      <ThemeColor color="#FFFFFF" />
+      <OfflineBanner />
 
       <main className={chat ? "flex min-h-0 flex-1 flex-col" : "flex-1"}>
         <div
           className={
             chat
-              ? "mx-auto flex min-h-0 w-full max-w-[860px] flex-1 flex-col px-0 sm:px-6 sm:py-6"
+              ? "mx-auto flex min-h-0 w-full max-w-[860px] flex-1 flex-col px-0 pb-24 sm:px-6 sm:py-6 md:pb-6"
               : "mx-auto w-full max-w-[1240px] px-4 pb-28 pt-6 sm:px-6 md:pb-12 md:pt-8"
           }
         >
+          {chat ? null : <InstallPrompt />}
           {children}
         </div>
       </main>
 
-      {/* Phone tab bar */}
-      <nav
-        aria-label="Dashboard"
-        className="safe-bottom fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t border-[#E7E3D9] bg-white/95 px-1 pt-1.5 backdrop-blur md:hidden"
-      >
-        {items.map((i) => {
-          const on = active === i.id;
-          return (
-            <button
-              key={i.id}
-              onClick={() => onSelect(i.id)}
-              aria-current={on ? "page" : undefined}
-              className={`relative flex min-h-12 flex-col items-center justify-center gap-0.5 text-[10px] font-semibold ${
-                on ? "text-[#0B0B0C]" : "text-[#7A7568]"
-              }`}
-            >
-              <span className={`relative flex h-7 w-11 items-center justify-center rounded-full transition ${on ? "bg-[#E4D18B]/60" : ""}`}>
-                <Icon name={i.icon} className="h-[20px] w-[20px]" />
-                <Dot n={badges?.[i.id]} />
-              </span>
-              {i.short}
-            </button>
-          );
-        })}
-      </nav>
+      <FloatingTabBar items={items} active={active} onSelect={onSelect} badges={badges} />
     </div>
   );
 }

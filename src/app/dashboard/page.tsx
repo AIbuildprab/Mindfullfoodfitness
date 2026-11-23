@@ -27,5 +27,5 @@ export default async function DashboardPage() {
 
   const name = profile?.first_name || user.email?.split("@")[0] || "there";
 
-  return <ClientDashboard name={name} />;
+  return <ClientDashboard userId={user.id} name={name} />;
 }

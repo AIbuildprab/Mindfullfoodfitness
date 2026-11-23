@@ -23,6 +23,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  interactiveWidget: "resizes-content",
   themeColor: "#000000",
 };
 
@@ -49,7 +50,8 @@ export const metadata: Metadata = {
     images: ["/mff/hero-bg.webp"],
   },
   applicationName: "Mindfull Food Fitness",
-  appleWebApp: { capable: true, title: "MFF", statusBarStyle: "black" },
+  appleWebApp: { capable: true, title: "Mindfull", statusBarStyle: "default" },
+  other: { "mobile-web-app-capable": "yes" },
   formatDetection: { telephone: false },
   // Icons come from the app/ file conventions: favicon.ico, icon.png, apple-icon.png.
 };

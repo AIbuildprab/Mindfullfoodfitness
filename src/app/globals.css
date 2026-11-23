@@ -559,3 +559,47 @@ body:has([data-app-shell="full"]) [data-site-chrome] {
     display: none;
   }
 }
+
+/* ---- App feel (installed PWA and touch devices) ---- */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+a,
+button,
+[role="tab"],
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+@media (display-mode: standalone) {
+  body {
+    overscroll-behavior-y: none;
+    -webkit-touch-callout: none;
+  }
+  /* Controls behave like app chrome, not selectable web text. */
+  button,
+  nav a {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+/* Inputs under 16px make iOS zoom the page on focus. */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: max(16px, 1em);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
