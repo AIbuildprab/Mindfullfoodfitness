@@ -547,3 +547,15 @@ button[class*="rounded-full"]:active {
     transform: translateX(360%);
   }
 }
+
+/* Dashboard shells (/dashboard, /coach) take over the screen on desktop:
+   the site header and footer step aside. Tablet and phone keep the site navbar. */
+body:has([data-app-shell]) footer[data-site-chrome],
+body:has([data-app-shell="full"]) [data-site-chrome] {
+  display: none;
+}
+@media (min-width: 1024px) {
+  body:has([data-app-shell]) [data-site-chrome] {
+    display: none;
+  }
+}
