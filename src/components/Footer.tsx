@@ -24,7 +24,7 @@ export function Footer() {
   const right = quickLinks.slice(5);
 
   return (
-    <footer className="pb-cta bg-black text-white">
+    <footer data-site-chrome className="pb-cta bg-black text-white">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 text-center sm:px-8 lg:grid-cols-[minmax(0,1.5fr)_auto_minmax(0,1fr)] lg:text-left">
         <div>
           <Link href="/#home" className="inline-flex min-h-11 items-center">

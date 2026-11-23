@@ -62,7 +62,16 @@ export async function signUp(input: {
         emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
       },
     });
-    if (error) return { ok: false, reason: "invalid", message: error.message };
+    if (error) {
+      const limited = error.status === 429 || /rate limit/i.test(error.message);
+      return {
+        ok: false,
+        reason: "invalid",
+        message: limited
+          ? "We're sending a lot of sign-up emails right now. Please try again in an hour, or message Paul on WhatsApp."
+          : error.message,
+      };
+    }
     return { ok: true, needsConfirmation: !data.session };
   } catch {
     return { ok: false, reason: "network" };

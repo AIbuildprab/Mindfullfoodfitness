@@ -29,7 +29,7 @@ export function Header() {
   const [group, setGroup] = useState<string | null>(null);
   const [mGroup, setMGroup] = useState<string | null>(null);
   const progressRef = useRef<HTMLDivElement>(null);
-  const solid = scrolled || open || pathname === "/privacy" || pathname === "/terms" || pathname === "/login" || pathname === "/dashboard" || pathname === "/signup";
+  const solid = scrolled || open || pathname === "/privacy" || pathname === "/terms" || pathname === "/login" || pathname === "/dashboard" || pathname === "/signup" || pathname.startsWith("/dashboard") || pathname.startsWith("/coach") || pathname.startsWith("/account");
 
   useEffect(() => {
     const onScroll = () => {
@@ -104,7 +104,7 @@ export function Header() {
 
   return (
     <>
-      <div className="hidden border-b border-gold/30 bg-[#0b0b0c] text-white lg:block">
+      <div data-site-chrome className="hidden border-b border-gold/30 bg-[#0b0b0c] text-white lg:block">
         <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 py-1">
           <div className="flex min-w-0 items-center gap-1 font-[family-name:var(--font-open-sans)] text-[13px] text-white/70">
             <a href={site.phoneHref} className="inline-flex min-h-8 items-center gap-2 rounded-full px-3 transition hover:text-gold-2">
@@ -143,6 +143,7 @@ export function Header() {
       </div>
 
       <header
+        data-site-chrome
         className={`sticky top-0 z-50 border-b border-white/5 text-white transition-colors duration-300 ${
           solid ? "bg-black" : "bg-black/[0.07]"
         }`}

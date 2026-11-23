@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signOut } from "@/lib/auth";
+import { scrollTopSoon } from "@/lib/scroll-top";
 
 export function SignOutButton() {
   const router = useRouter();
@@ -11,7 +12,8 @@ export function SignOutButton() {
   async function onClick() {
     setBusy(true);
     await signOut();
-    router.replace("/login");
+    router.replace("/");
+    scrollTopSoon();
     router.refresh();
   }
 
